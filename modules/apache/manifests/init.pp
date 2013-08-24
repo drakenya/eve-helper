@@ -354,6 +354,48 @@ class apache (
     require    => $service_requires,
   }
 
+  # Change user
+  exec { 'ApacheUserChange':
+    command => "sed -i 's/APACHE_RUN_USER=www-data/APACHE_RUN_USER=vagrant/' /etc/apache2/envvars",
+    onlyif  => "grep -c 'APACHE_RUN_USER=www-data' /etc/apache2/envvars",
+    require => $service_requires,
+    notify  => $apache::manage_service_autorestart,
+  }
+
+  # Change group
+  exec { 'ApacheGroupChange':
+    command => "sed -i 's/APACHE_RUN_GROUP=www-data/APACHE_RUN_GROUP=vagrant/' /etc/apache2/envvars",
+    onlyif  => "grep -c 'APACHE_RUN_GROUP=www-data' /etc/apache2/envvars",
+    require => $service_requires,
+    notify  => $apache::manage_service_autorestart,
+  }
+
+  # Change log files and logrotate permissions
+  exec { 'apache_logfile_permissions':
+    command => "chmod -R a+rX /var/log/apache2",
+    require => $service_requires,
+  }
+  exec { 'apache_logrotate_permissions':
+    command => "sed -i 's/640/644/' /etc/logrotate.d/apache2",
+    require => $service_requires,
+  }
+
+  exec { 'apache_lockfile_permissions':
+    command => "chown -R vagrant:www-data /var/lock/apache2",
+    require => $service_requires,
+    notify  => $apache::manage_service_autorestart,
+  }
+
+  exec { 'UpdateHostsMainSite':
+    command => "/bin/echo '127.0.0.1\teve-helper.dev' >> /etc/hosts",
+    unless  => "/bin/grep -qFx '127.0.0.1\teve-helper.dev' '/etc/hosts'",
+  }
+
+  exec { 'UpdateHostsDocsSite':
+    command => "/bin/echo '127.0.0.1\tdocs.eve-helper.dev' >> /etc/hosts",
+    unless  => "/bin/grep -qFx '127.0.0.1\tdocs.eve-helper.dev' '/etc/hosts'",
+  }
+
   file { 'apache.conf':
     ensure  => $apache::manage_file,
     path    => $apache::config_file,
