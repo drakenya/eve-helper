@@ -43,8 +43,17 @@ apache::vhost { 'eve-helper.dev':
   docroot       => '/var/www/public/',
   port          => '80',
   env_variables => [
-    'APACHE_RUN_GROUP vagrant'
-  ],
+],
+  priority      => '1',
+}
+apache::vhost { 'docs.eve-helper.dev':
+  server_name   => 'docs.eve-helper.dev',
+  serveraliases => [
+],
+  docroot       => '/var/www/',
+  port          => '80',
+  env_variables => [
+],
   priority      => '1',
 }
 
