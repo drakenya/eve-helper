@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'default' => 'mysql',
+	'default' => 'eve_helper',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -45,6 +45,28 @@ return array(
 	*/
 
 	'connections' => array(
+
+        'eve_helper' => array(
+            'driver'   => 'pgsql',
+            'host'     => '192.168.56.101',
+            'database' => 'eve_helper',
+            'username' => 'eve_helper',
+            'password' => 'eve_helper',
+            'charset'  => 'utf8',
+            'prefix'   => '',
+            'schema'   => 'public',
+        ),
+
+        'eve_data' => array(
+            'driver'   => 'pgsql',
+            'host'     => '192.168.56.101',
+            'database' => 'eve_data',
+            'username' => 'eve_data',
+            'password' => 'eve_data',
+            'charset'  => 'utf8',
+            'prefix'   => '',
+            'schema'   => 'public',
+        ),
 
 		'sqlite' => array(
 			'driver'   => 'sqlite',
