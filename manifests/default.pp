@@ -40,7 +40,7 @@ apache::vhost { 'eve-helper.dev':
   server_name   => 'eve-helper.dev',
   serveraliases => [
 ],
-  docroot       => '/var/www/public/',
+  docroot       => '/var/www/www/public/',
   port          => '80',
   env_variables => [
 ],
