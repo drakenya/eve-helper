@@ -35,13 +35,10 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::guest('login');
-});
-
-
-Route::filter('auth.basic', function()
-{
-	return Auth::basic();
+	if (Auth::guest())
+	{
+		return Redirect::guest('user/login');
+	}
 });
 
 /*
@@ -57,7 +54,10 @@ Route::filter('auth.basic', function()
 
 Route::filter('guest', function()
 {
-	if (Auth::check()) return Redirect::to('/');
+	if (Auth::check())
+	{
+		return Redirect::to('user/profile');
+	}
 });
 
 /*
