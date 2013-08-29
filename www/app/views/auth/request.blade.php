@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
 	{{ Form::open([
-		'route' => 'user/request',
+		'route' => 'auth/request',
 		'autocomplete' => 'off',
 	]) }}
 		{{ Form::label('email', 'Email') }}

@@ -18,36 +18,36 @@ class UserController extends Controller
 			'errors' => $errors,
 		];
 
-		if (Input::server('REQUEST_METHOD') == 'POST')
+		return View::make('auth/login', $data);
+	}
+
+	public function loginProcessAction()
+	{
+		$validator = Validator::make(Input::all(), [
+			'username' => 'required',
+			'password' => 'required',
+		]);
+
+		if ($validator->passes())
 		{
-			$validator = Validator::make(Input::all(), [
-				'username' => 'required',
-				'password' => 'required',
-			]);
+			$credentials = [
+				'username' => Input::get('username'),
+				'password' => Input::get('password'),
+			];
 
-			if ($validator->passes())
+			if (Auth::attempt($credentials))
 			{
-				$credentials = [
-					'username' => Input::get('username'),
-					'password' => Input::get('password'),
-				];
-
-				if (Auth::attempt($credentials))
-				{
-					return Redirect::route('user/profile');
-				}
+				return Redirect::route('user/profile');
 			}
-
-			$data['errors'] = new MessageBag([
-				'password' => ['Username and/or password invalid.'],
-			]);
-
-			$data['username'] = Input::get('username');
-
-			return Redirect::route('user/login')->withInput($data);
 		}
 
-		return View::make('user/login', $data);
+		$data['errors'] = new MessageBag([
+			'password' => ['Username and/or password invalid.'],
+		]);
+
+		$data['username'] = Input::get('username');
+
+		return Redirect::route('auth/login')->withInput($data);
 	}
 
 	public function requestAction()
@@ -76,11 +76,11 @@ class UserController extends Controller
 
 				$data['requested'] = true;
 
-				return Redirect::route('user/request')->withInput($data);
+				return Redirect::route('auth/request')->withInput($data);
 			}
 		}
 
-		return View::make('user/request', $data);
+		return View::make('auth/request', $data);
 	}
 
 	public function resetAction()
@@ -129,10 +129,10 @@ class UserController extends Controller
 			$data['email'] = Input::get('email');
 			$data['errors'] = $validator->errors();
 
-			return Redirect::to(URL::route('user/reset') . $token)->withInput($data);
+			return Redirect::to(URL::route('auth/reset') . $token)->withInput($data);
 		}
 
-		return View::make('user/reset', $data);
+		return View::make('auth/reset', $data);
 	}
 
 	public function profileAction()
@@ -143,6 +143,6 @@ class UserController extends Controller
 	public function logoutAction()
 	{
 		Auth::logout();
-		return Redirect::route('user/login');
+		return Redirect::route('auth/login');
 	}
 }

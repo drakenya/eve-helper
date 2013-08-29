@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
 	{{ Form::open([
-		'url' => URL::route('user/reset') . $token,
+		'url' => URL::route('auth/reset-process') . $token,
 		'autocomplete' => 'off',
 	]) }}
 		@if ($error = $errors->first('token'))

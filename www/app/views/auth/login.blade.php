@@ -2,7 +2,7 @@
 
 @section('content')
 	{{ Form::open([
-		'route' => 'user/login',
+		'route' => 'auth/login-process',
 		'autocomplete' => 'off',
 	]) }}
 
