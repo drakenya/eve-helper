@@ -137,7 +137,20 @@ class UserController extends Controller
 
 	public function profileAction()
 	{
-		return View::make('user/profile');
+		$keyId = '2535925';
+		$vCode = 'U27kS5TWI8Qb2V1oJYhaEGgcX6lxWyf3DRAZuFmFc0f865xtwBydJKvrJvLYkRXQ';
+		$pheal = App::make('pheal', [$keyId, $vCode, 'char']);
+
+
+		$newResponse = $pheal->AccountBalance(['characterId' => '2044783304']);
+		$response = $pheal->serverScope->ServerStatus();
+
+		$data = [
+			'pheal_response' => $response,
+			'character' => $newResponse,
+		];
+
+		return View::make('user/profile', $data);
 	}
 
 	public function logoutAction()
