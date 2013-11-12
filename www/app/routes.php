@@ -15,7 +15,7 @@ Route::group(['before' => 'guest'], function ()
 {
 	Route::get('/auth/login', [
 		'as' => 'auth/login',
-		'uses' => 'UserController@loginAction',
+		'uses' => 'Drakenya\Ctrl\UserController@loginAction',
 	]);
 
 	Route::post('/auth/login-process', [

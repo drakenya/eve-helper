@@ -1,15 +1,17 @@
 <?php
 
+namespace Drakenya\Ctrl;
+
 use Illuminate\Support\MessageBag;
 
-class UserController extends Controller
+class UserController extends \Controller
 {
 
 	public function loginAction()
 	{
 		$errors = new MessageBag();
 
-		if ($old = Input::old('errors'))
+		if ($old = \Input::old('errors'))
 		{
 			$errors = $old;
 		}
@@ -18,7 +20,7 @@ class UserController extends Controller
 			'errors' => $errors,
 		];
 
-		return View::make('auth/login', $data);
+		return \View::make('auth/login', $data);
 	}
 
 	public function loginProcessAction()
